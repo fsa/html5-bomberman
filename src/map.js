@@ -1,31 +1,35 @@
 "use strict";
 export class Map {
-    constructor(x, y) {
+    constructor(x, y, blockCount = 72) {
         this.map = new Array(y);
+        // Создаём пустую карту с бортиками из камня
         for (let i = 0; i < y; i++) {
-            this.map[i] = new Array(x).fill(new Empty());
-            this.map[i][0] = new Rock();
-            this.map[i][x - 1] = new Rock();
+            if (i == 0 || i == y - 1) {
+                this.map[i] = new Array(x).fill(new Rock());
+            } else {
+                this.map[i] = new Array(x).fill(new Empty());
+                this.map[i][0] = new Rock();
+                this.map[i][x - 1] = new Rock();
+            }
         }
-        for (let i = 0; i < x; i++) {
-            this.map[0][i] = new Rock();
-            this.map[y - 1][i] = new Rock();
-        }
+        // Добавляем блоки на поле
         for (let j = 2; j < y - 1; j += 2) {
             for (let i = 2; i < x - 1; i += 2) {
                 this.map[j][i] = new Rock();
             }
         }
-        for (let i = 0; i < 50; i++) {
+        // Добавляем удаляемые препятствия
+        for (let i = 0; i < blockCount; i++) {
             let block_x = Math.floor(Math.random() * x);
             let block_y = Math.floor(Math.random() * y);
             if (this.map[block_y][block_x].name == "empty") {
                 this.map[block_y][block_x] = new Block();
             }
         }
-        for (let i = 1; i < 4; i++) {
-            this.map[1][i] = new Empty;
-            this.map[i][1] = new Empty;
+        // Чистим поле рядом со спауном
+        for (let i = 1; i < 3; i++) {
+            this.map[1][i] = new Empty();
+            this.map[i][1] = new Empty();
         }
     }
 
@@ -37,17 +41,17 @@ export class Map {
 class Rock {
     name = "stone";
     move = false;
-    enemy_move = false;
+    ghost_move = false;
 }
 
 class Empty {
     name = "empty";
     move = true;
-    enemy_move = true;
+    ghost_move = true;
 }
 
 class Block {
     name = "block";
     move = false;
-    enemy_move = true;
+    ghost_move = true;
 }
