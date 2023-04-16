@@ -1,5 +1,7 @@
 "use strict";
 import "./style.css";
+import "./img/apple.png";
+
 import { Map } from "./map.js";
 import { MapDrawer } from "./map_drawer.js";
 
@@ -13,16 +15,27 @@ const game = {
     ),
 };
 
-const canvas = document.createElement("canvas");
-div.appendChild(canvas);
-canvas.width = game.blockSize * game.width;
-canvas.height = game.blockSize * game.height;
-canvas.style.display = "block";
-canvas.style.maxWidth = "100%";
-canvas.style.maxHeight = "100vh";
-const ctx = canvas.getContext("2d");
-ctx.fillStyle = "#eeeeee";
-ctx.fillRect(0, 0, canvas.width, canvas.height);
-const map = new Map(game.width, game.height);
-const drawer = new MapDrawer(ctx, game.blockSize);
-drawer.redraw(map);
+const map = new Map(game.width, game.height, 72);
+const drawer = new MapDrawer(div, game);
+for(let i=0;i<5;i++) {
+    map.addMob("money", false, 0.02*(i+1));
+}
+drawer.redraw(map.getMap());
+drawer.drawMobs(map.getMobs())
+
+/*addEventListener("keydown", movePlayer);
+function movePlayer() {
+    map.oneStep();
+    drawer.redraw(map.getMap());
+    drawer.drawMobs(map.getMobs());
+
+}
+*/
+
+let interval = setInterval(() => {
+    map.oneStep();
+    drawer.redraw(map.getMap());
+    drawer.drawMobs(map.getMobs());
+}, 30);
+
+//clearInterval(interval);
