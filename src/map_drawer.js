@@ -28,9 +28,15 @@ export class MapDrawer {
         mobs.forEach((mob) => {
             //this.drawSquare("mob", mob.x, mob.y);
             let image = new Image();
-            image.src = "img/apple.png";
+            image.src = "img/pear.png";
             this.drawImg(image, mob.x, mob.y);
         });
+    }
+
+    drawPlayer(player) {
+        let image = new Image();
+        image.src = 'img/apple.png';
+        this.drawImg(image, player.x, player.y);
     }
 
     drawSquare(name, x, y) {
